@@ -343,7 +343,7 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
   }
 }
 
-/* Narrow window: search, a chip track of categories, cards and tiles, then both footers */
+/* Narrow window: search, a collapsible category list, cards and tiles, then both footers */
 @container cws-window (max-width: 599px) {
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) > .window-content {
     display: grid;
@@ -369,30 +369,56 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
     grid-area: search;
   }
 
+  /* Category list: a column that shows only the active category and a caret; tapping it moves
+     focus into the list (:focus-within) and opens it, and it closes once focus leaves */
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs {
     grid-area: nav;
-    flex-direction: row;
+    flex-direction: column;
+    gap: 4px;
     height: auto;
     min-height: 0;
-    gap: 8px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    scrollbar-width: none;
-    -webkit-mask-image: linear-gradient(to right, #000 85%, transparent);
-    mask-image: linear-gradient(to right, #000 85%, transparent);
+    max-height: none;
+    overflow: visible;
   }
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button {
-    flex: none;
-    width: auto;
-    min-height: 36px;
-    padding: 0 14px;
+    width: 100%;
     background: var(--cws-surface);
-    border-radius: var(--cws-radius-pill);
   }
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button.active {
     background: var(--cws-accent);
+  }
+
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:not(:focus-within) > button:not(.active) {
+    display: none;
+  }
+
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button.no-matches {
+    opacity: 0.5;
+  }
+
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button.active::after {
+    content: "";
+    flex: none;
+    width: 14px;
+    height: 14px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E") center / contain no-repeat;
+    transition: transform 150ms ease;
+  }
+
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:focus-within > button.active::after {
+    transform: rotate(180deg);
+  }
+
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button > span:first-child {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > .form-footer {

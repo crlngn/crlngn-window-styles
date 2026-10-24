@@ -23,7 +23,7 @@ import { compareVersions, VoteSet } from './core.mjs';
 
 export { compareVersions, VoteSet } from './core.mjs';
 
-export const VERSION = '0.1.0';
+export const VERSION = '0.1.1';
 export const BODY_CLASS = 'crlngn-ws';
 export const APP_CLASS = 'cws';
 export const OPT_OUT_CLASS = 'crlngn-ws-off';
@@ -38,6 +38,7 @@ const HINT_OPEN = 'cws-hint-open';
 const HINT_SELECTOR = `body.${BODY_CLASS} .application.${APP_CLASS} p.hint.${HINT_LONG}`;
 /** Windows where Carolingian UI shows hints as tooltips: the kit leaves their hints alone */
 const TOOLTIP_HINTS = '.crlngn-hints';
+const CATEGORY_NAV = `body.${BODY_CLASS} .application.${APP_CLASS}.category-browser aside > nav.tabs`;
 
 /**
  * The running copy of the kit: owns the injected stylesheet, the Foundry hooks, the document
@@ -56,6 +57,8 @@ class Runtime {
     this.hints = new Set();
     this.hookIds = [];
     this.onClick = this.#onClick.bind(this);
+    this.onPointerDown = this.#onPointerDown.bind(this);
+    this.navOpenAtPress = false;
     this.onKeyDown = this.#onKeyDown.bind(this);
     this.observer = typeof ResizeObserver === 'function'
       ? new ResizeObserver((entries) => { for (const entry of entries) this.measure(entry.target); })
@@ -77,6 +80,7 @@ class Runtime {
 
     this.hookIds.push(['renderApplicationV2', Hooks.on('renderApplicationV2', (app, element) => this.mark(element ?? app?.element))]);
     this.hookIds.push(['closeApplicationV2', Hooks.on('closeApplicationV2', () => this.prune())]);
+    document.addEventListener('pointerdown', this.onPointerDown, true);
     document.addEventListener('click', this.onClick);
     document.addEventListener('keydown', this.onKeyDown);
 
@@ -90,6 +94,7 @@ class Runtime {
     this.style?.remove();
     for (const [hook, id] of this.hookIds) Hooks.off(hook, id);
     this.hookIds = [];
+    document.removeEventListener('pointerdown', this.onPointerDown, true);
     document.removeEventListener('click', this.onClick);
     document.removeEventListener('keydown', this.onKeyDown);
     this.observer?.disconnect();
@@ -157,10 +162,30 @@ class Runtime {
     hint.setAttribute('aria-expanded', String(open));
   }
 
-  /** @param {MouseEvent} event */
+  /**
+   * Remember whether a narrow window's collapsible category list was already open when it was
+   * pressed (capture phase, before the press moves focus), so the click can tell a pick from the
+   * tap that opens the list.
+   * @param {PointerEvent} event
+   */
+  #onPointerDown(event) {
+    const nav = event.target instanceof Element ? event.target.closest(CATEGORY_NAV) : null;
+    this.navOpenAtPress = !!nav && nav.matches(':focus-within');
+  }
+
+  /**
+   * Toggle a long hint; after a category is picked from an open collapsible list, blur the
+   * button so the list closes (it opens while focus is inside it, see base.css).
+   * @param {MouseEvent} event
+   */
   #onClick(event) {
-    const hint = event.target instanceof Element ? event.target.closest(HINT_SELECTOR) : null;
+    const target = event.target instanceof Element ? event.target : null;
+    const hint = target?.closest(HINT_SELECTOR);
     if (hint) this.toggle(hint);
+    const button = target?.closest(`${CATEGORY_NAV} > button`);
+    const content = button?.closest('.window-content');
+    if (button && this.navOpenAtPress && content && getComputedStyle(content).display === 'grid') button.blur();
+    this.navOpenAtPress = false;
   }
 
   /** @param {KeyboardEvent} event */

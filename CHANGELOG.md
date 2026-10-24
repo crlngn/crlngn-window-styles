@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.1] - 2026-10-24
+
+### Changed
+
+- Narrow category browsers show the categories as a vertical list collapsed to the active one, with a caret, instead of a horizontal chip track. Tapping the active category opens the list, and picking one closes it again. Keyboard focus inside the list keeps it open.
+
 ## [0.1.0] - 2026-10-24
 
 ### Added
