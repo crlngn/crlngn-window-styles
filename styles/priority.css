@@ -1,0 +1,15 @@
+/*
+ * Window styles: must-win rules. Imported into the cascade layer layouts.crlngn-ws. For
+ * !important declarations the earlier layer wins, so these beat a game system's (system layer),
+ * a module's (modules layer) and an unlayered stylesheet's !important, whatever their
+ * specificity. Only !important declarations belong here; a normal declaration in this layer
+ * loses to every system and module. Add a rule only for a property something else is seen
+ * forcing on the allowlisted windows.
+ */
+
+/* Narrow category browsers rely on display: contents for aside and .main (base.css) */
+@container cws-window (max-width: 599px) {
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) > .window-content > :is(aside, .main) {
+    display: contents !important;
+  }
+}
