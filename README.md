@@ -20,12 +20,12 @@ The Swipe VTT dialog look for Foundry VTT's own ApplicationV2 windows and Dialog
 - **Footers:** uppercase text buttons with their icons hidden. The default action takes the accent (`[autofocus]` in dialogs, `[type=submit]` elsewhere).
 - **Category browsers:** sized by the window's width, not the screen's (container queries).
   - From 600px wide: the category list on the left and rows of label + hint beside the control.
-  - Below 600px: search, a vertical category list collapsed to the active category (tap to open, pick to close; at most five rows, or the window's height, then it scrolls under a fade), cards and half-width submenu tiles, with both footers on one row.
+  - Below 600px: search, a vertical category list collapsed to the active category (tap to open, pick to close; at most five rows, or the window's height, then it scrolls under a fade), cards (submenus show their button as an accent link with a caret, and the whole card opens them), with both footers on one row.
 
 ## Install in a host module
 
 ```json
-"dependencies": { "@crlngn/window-styles": "github:crlngn/crlngn-window-styles#v0.1.2" }
+"dependencies": { "@crlngn/window-styles": "github:crlngn/crlngn-window-styles#v0.1.3" }
 ```
 
 Copy `styles/` into the module's build output (Vite, rollup-plugin-copy):

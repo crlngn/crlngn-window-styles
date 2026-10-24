@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.3] - 2026-10-24
+
+### Changed
+
+- Submenu settings on narrow category browsers are full-width cards instead of half-width tiles. Each card shows the setting's name, the button's text under it as an underlined accent link, and a caret on the right. A tap anywhere on the card opens the submenu; the button's `::before` covers the card, so nothing is added to the DOM.
+
 ## [0.1.2] - 2026-10-24
 
 ### Changed
