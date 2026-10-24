@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.5] - 2026-10-24
+
+### Changed
+
+- The category list on narrow windows sits on a full-width band in the field colour (`--cws-field`). The band runs to the window's edges, and its rows are padded back in line with the search field and the cards. Width, side margins and padding are in `priority.css`, because Carolingian UI's `.tabs.vertical` rules outrank `base.css`.
+
 ## [0.1.4] - 2026-10-24
 
 ### Changed

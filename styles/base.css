@@ -369,8 +369,10 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
     grid-area: search;
   }
 
-  /* Category list: a column that shows only the active category and a caret; tapping it moves
-     focus into the list (:focus-within) and opens it, and it closes once focus leaves */
+  /* Category list: a full-width band (bleeds into the window's gutters, padded back so the rows
+     line up with the rest of the window) holding a column that shows only the active category
+     and a caret; tapping it moves focus into the list (:focus-within) and opens it, and it closes
+     once focus leaves */
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs {
     grid-area: nav;
     flex-direction: column;
@@ -378,6 +380,9 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
     height: auto;
     min-height: 0;
     max-height: none;
+    margin: 0 calc(-1 * var(--cws-gutter));
+    padding: 8px var(--cws-gutter);
+    background: var(--cws-field);
     overflow: visible;
   }
 
@@ -395,11 +400,11 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
   }
 
   /* Open list: at most five rows, or less when the window has less room (its grid row can shrink),
-     then it scrolls. With more than five rows the bottom fades and a little extra space lets the
-     last row scroll clear of the fade; where scroll-driven animations exist, the fade instead
+     then it scrolls. With more than five rows the bottom fades and a little extra space (priority.css) lets
+     the last row scroll clear of the fade; where scroll-driven animations exist, the fade instead
      follows the scroll (below), so it also shows when a short window makes fewer rows scroll */
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:focus-within {
-    max-height: calc(5 * var(--cws-control) + 4 * 4px);
+    max-height: calc(5 * var(--cws-control) + 4 * 4px + 16px);
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
@@ -411,14 +416,12 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
   }
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:focus-within:has(> button:nth-child(6)) {
-    padding-bottom: 28px;
     -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
     mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
   }
 
   @supports (animation-timeline: scroll()) {
     body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:focus-within {
-      padding-bottom: 0;
       -webkit-mask-image: none;
       mask-image: none;
       animation: cws-scroll-fade linear both;
