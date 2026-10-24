@@ -56,7 +56,7 @@ function splitSelectorList(list) {
 test('every base.css and priority.css rule is scoped to marked windows under the body class', () => {
   for (const file of ['base.css', 'priority.css']) {
     const css = readFileSync(new URL(`../styles/${file}`, import.meta.url), 'utf8').replace(/\/\*[\s\S]*?\*\//g, '');
-    const selectors = [...css.matchAll(/([^{}@]+)\{/g)].map((m) => m[1].trim()).filter((s) => s && !s.startsWith('container '));
+    const selectors = [...css.matchAll(/([^{}@]+)\{/g)].map((m) => m[1].trim()).filter((s) => s && !/^(container|supports|keyframes) /.test(s) && !/^(from|to|\d+%)/.test(s));
     for (const group of selectors) {
       for (const selector of splitSelectorList(group)) {
         assert.match(selector.trim(), /^body\.crlngn-ws \.application\.cws[.:]/, `${file}: ${selector.trim()}`);

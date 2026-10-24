@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.2] - 2026-10-24
+
+### Changed
+
+- The open category list on narrow windows shows at most five rows, or less when the window has less room, and scrolls beyond that. With more than five categories its bottom edge fades. Where the browser supports scroll-driven animations, the fade follows the scroll instead: bottom at the start, both edges while scrolling, top at the end, and none when nothing scrolls.
+
 ## [0.1.1] - 2026-10-24
 
 ### Changed

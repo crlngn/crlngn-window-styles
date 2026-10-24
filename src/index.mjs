@@ -23,7 +23,7 @@ import { compareVersions, VoteSet } from './core.mjs';
 
 export { compareVersions, VoteSet } from './core.mjs';
 
-export const VERSION = '0.1.1';
+export const VERSION = '0.1.2';
 export const BODY_CLASS = 'crlngn-ws';
 export const APP_CLASS = 'cws';
 export const OPT_OUT_CLASS = 'crlngn-ws-off';

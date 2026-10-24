@@ -1,6 +1,6 @@
 {
   "name": "@crlngn/window-styles",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "Swipe-style ApplicationV2 windows and DialogV2 dialogs for Foundry VTT, shared by Carolingian modules",
   "license": "CC-BY-NC-4.0",
   "author": "Caroline Rozendo (Carolingian, crlngn)",

@@ -348,7 +348,7 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) > .window-content {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    grid-template-rows: auto auto auto minmax(0, 1fr) auto;
+    grid-template-rows: auto minmax(0, auto) auto minmax(0, 1fr) auto;
     grid-template-areas:
       "search search search search"
       "nav nav nav nav"
@@ -392,6 +392,38 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:not(:focus-within) > button:not(.active) {
     display: none;
+  }
+
+  /* Open list: at most five rows, or less when the window has less room (its grid row can shrink),
+     then it scrolls. With more than five rows the bottom fades and a little extra space lets the
+     last row scroll clear of the fade; where scroll-driven animations exist, the fade instead
+     follows the scroll (below), so it also shows when a short window makes fewer rows scroll */
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:focus-within {
+    max-height: calc(5 * var(--cws-control) + 4 * 4px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: none;
+  }
+
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:focus-within::-webkit-scrollbar {
+    display: none;
+  }
+
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:focus-within:has(> button:nth-child(6)) {
+    padding-bottom: 28px;
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+  }
+
+  @supports (animation-timeline: scroll()) {
+    body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs:focus-within {
+      padding-bottom: 0;
+      -webkit-mask-image: none;
+      mask-image: none;
+      animation: cws-scroll-fade linear both;
+      animation-timeline: scroll(self);
+    }
   }
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button.no-matches {
@@ -525,5 +557,22 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-fields > button[data-action="openSubmenu"] > i {
     font-size: 20px;
+  }
+}
+
+/* Scroll fade for the open category list: bottom edge at the start, both edges while scrolling,
+   top edge at the end. A scroll timeline is inactive without overflow, so nothing fades then */
+@keyframes cws-scroll-fade {
+  0% {
+    -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+    mask-image: linear-gradient(to bottom, #000 calc(100% - 36px), transparent);
+  }
+  2%, 98% {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 36px, #000 calc(100% - 36px), transparent);
+    mask-image: linear-gradient(to bottom, transparent, #000 36px, #000 calc(100% - 36px), transparent);
+  }
+  100% {
+    -webkit-mask-image: linear-gradient(to bottom, transparent, #000 36px);
+    mask-image: linear-gradient(to bottom, transparent, #000 36px);
   }
 }
