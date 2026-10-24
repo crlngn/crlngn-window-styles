@@ -388,7 +388,7 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button {
     width: 100%;
-    background: var(--cws-surface);
+    background: transparent;
   }
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button.active {

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.6] - 2026-10-24
+
+### Changed
+
+- Rows in the narrow category list have no background of their own; only the selected category keeps the accent.
+
 ## [0.1.5] - 2026-10-24
 
 ### Changed
