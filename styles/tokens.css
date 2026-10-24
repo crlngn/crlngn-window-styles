@@ -1,6 +1,7 @@
 /*
- * Window styles tokens. Defaults come from the Swipe VTT design system; :where() keeps their
- * specificity at zero so a host module maps its own theme by redefining them on body
+ * Window styles tokens. Defaults come from the Swipe VTT design system. Imported into the
+ * sublayer modules.crlngn-ws and kept at zero specificity with :where(), so a host module maps
+ * its own theme by redefining them on body, from the modules layer or unlayered
  * (e.g. body.swipe-vtt { --cws-accent: var(--mobile-accent); }).
  */
 :where(body.crlngn-ws) {

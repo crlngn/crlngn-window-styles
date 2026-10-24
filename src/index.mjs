@@ -7,12 +7,14 @@
  * votes of an older one), and toggles `body.crlngn-ws` while any module votes on. The only
  * behaviour it adds is the hint toggle: a hint taller than two lines gets the classes
  * `cws-hint-long` / `cws-hint-open`, `role="button"`, `tabindex` and `aria-expanded`, and opens
- * or closes on click, Enter or Space. A window opts out with the class `crlngn-ws-off`.
+ * or closes on click, Enter or Space (not in windows where Carolingian UI shows hints as tooltips,
+ * `.crlngn-hints`). A window opts out with the class `crlngn-ws-off`.
  *
- * Stylesheets: tokens.css and base.css are imported unlayered, so they win over Foundry's
- * layered styles and over Carolingian UI's unlayered rules by specificity; priority.css holds
- * only !important declarations and is imported into `layouts.crlngn-ws`, the layer whose
- * !important beats a game system's or module's !important.
+ * Stylesheets: tokens.css (the --cws-* defaults) goes into the sublayer `modules.crlngn-ws`, so a
+ * host's own mapping wins whether it is in the modules layer or unlayered. base.css is imported
+ * unlayered, so it wins over Foundry's layered styles and over Carolingian UI's unlayered rules
+ * by specificity. priority.css holds only !important declarations and is imported into
+ * `layouts.crlngn-ws`, the layer whose !important beats a game system's or module's !important.
  *
  * Bundled into each host module; imports nothing from them.
  */
@@ -26,7 +28,7 @@ export const BODY_CLASS = 'crlngn-ws';
 export const APP_CLASS = 'cws';
 export const OPT_OUT_CLASS = 'crlngn-ws-off';
 export const APP_SELECTORS = Object.freeze([
-  'dialog.application.dialog',
+  'dialog.application.dialog:not(.dnd5e2)',
   '.application.category-browser'
 ]);
 
@@ -34,6 +36,8 @@ const GLOBAL_KEY = Symbol.for('crlngn.windowStyles');
 const HINT_LONG = 'cws-hint-long';
 const HINT_OPEN = 'cws-hint-open';
 const HINT_SELECTOR = `body.${BODY_CLASS} .application.${APP_CLASS} p.hint.${HINT_LONG}`;
+/** Windows where Carolingian UI shows hints as tooltips: the kit leaves their hints alone */
+const TOOLTIP_HINTS = '.crlngn-hints';
 
 /**
  * The running copy of the kit: owns the injected stylesheet, the Foundry hooks, the document
@@ -64,7 +68,7 @@ class Runtime {
     style.dataset.crlngnWindowStyles = this.version;
     const url = (file) => `${this.basePath}/${file}?v=${this.version}`;
     style.textContent = [
-      `@import url("${url('tokens.css')}");`,
+      `@import url("${url('tokens.css')}") layer(modules.crlngn-ws);`,
       `@import url("${url('base.css')}");`,
       `@import url("${url('priority.css')}") layer(layouts.crlngn-ws);`
     ].join('\n');
@@ -126,12 +130,14 @@ class Runtime {
 
   /**
    * Mark a hint as long when its text runs past the two-line clamp. Open hints keep their state;
-   * hidden ones (inactive tabs) measure 0 and are measured again when they get a size.
+   * hidden ones (inactive tabs, or visually hidden 1px submenu hints) are not long, and are
+   * measured again when they get a size.
    * @param {HTMLElement} hint
    */
   measure(hint) {
     if (!hint.isConnected || hint.classList.contains(HINT_OPEN)) return;
-    const long = document.body.classList.contains(BODY_CLASS) && hint.scrollHeight > hint.clientHeight + 1;
+    const long = document.body.classList.contains(BODY_CLASS) && !hint.closest(TOOLTIP_HINTS)
+      && hint.clientWidth > 1 && hint.scrollHeight > hint.clientHeight + 1;
     if (long === hint.classList.contains(HINT_LONG)) return;
     hint.classList.toggle(HINT_LONG, long);
     if (long) {

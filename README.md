@@ -10,7 +10,7 @@ The Swipe VTT dialog look for Foundry VTT's own ApplicationV2 windows and Dialog
 
 | Version | Windows |
 | --- | --- |
-| 0.1.0 | DialogV2 (`dialog.application.dialog`), category browsers (`.application.category-browser`: Game Settings, Configure Controls) |
+| 0.1.0 | DialogV2 (`dialog.application.dialog`, except dnd5e's own `.dnd5e2` dialogs), category browsers (`.application.category-browser`: Game Settings, Configure Controls) |
 
 ## What it looks like
 
@@ -51,7 +51,8 @@ body.my-module { --cws-accent: var(--my-accent); --cws-ground: var(--my-backgrou
 
 ## Cascade layers
 
-- **`tokens.css` and `base.css`** are imported unlayered, so they beat Foundry's layered styles. Every selector starts with `body.crlngn-ws .application.cws:not(.crlngn-ws-off)` so it also beats a host's unlayered window rules.
+- **`tokens.css`** (the `--cws-*` defaults) is imported into the sublayer `modules.crlngn-ws`, so a host's mapping wins, whether the host's CSS is in the `modules` layer (Swipe) or unlayered (Carolingian UI).
+- **`base.css`** is imported unlayered, so it beats Foundry's layered styles. Every selector starts with `body.crlngn-ws .application.cws:not(.crlngn-ws-off)`, so it also beats a host's unlayered window rules.
 - **`priority.css`** holds only `!important` declarations, in `layouts.crlngn-ws`. Foundry declares `layouts` before `system` and `modules`, and for `!important` the earlier layer wins. So these rules beat a system's or module's `!important` whatever its specificity.
 
 ## API

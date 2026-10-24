@@ -11,4 +11,4 @@
   - uppercase footer buttons without icons, with the default action in the accent colour.
 - Category browsers lay out by window width: a category list and label/control rows when wide; a chip track, cards and submenu tiles when narrow.
 - `install`, `request` (one vote per module; active while any votes on), `isActive`, `runningVersion`. The newest installed copy of the kit runs and takes over the votes of an older one.
-- `tokens.css` (`--cws-*` with Swipe VTT defaults), `base.css` (unlayered) and `priority.css` (`!important` only, in `layouts.crlngn-ws`).
+- `tokens.css` (`--cws-*` with Swipe VTT defaults, in `modules.crlngn-ws`), `base.css` (unlayered) and `priority.css` (`!important` only, in `layouts.crlngn-ws`).

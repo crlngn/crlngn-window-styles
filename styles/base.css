@@ -130,8 +130,9 @@ body.crlngn-ws .application.cws:not(.crlngn-ws-off) .form-group > label {
   color: var(--cws-text);
 }
 
-/* Hints: two lines, then a caret; the kit marks long ones and toggles them open */
-body.crlngn-ws .application.cws:not(.crlngn-ws-off) p.hint {
+/* Hints: two lines, then a caret; the kit marks long ones and toggles them open. Skipped in
+   windows where Carolingian UI shows hints as tooltips (.crlngn-hints). */
+body.crlngn-ws .application.cws:not(.crlngn-ws-off, .crlngn-hints) p.hint {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
@@ -141,13 +142,13 @@ body.crlngn-ws .application.cws:not(.crlngn-ws-off) p.hint {
   color: var(--cws-text-2);
 }
 
-body.crlngn-ws .application.cws:not(.crlngn-ws-off) p.hint.cws-hint-long {
+body.crlngn-ws .application.cws:not(.crlngn-ws-off, .crlngn-hints) p.hint.cws-hint-long {
   position: relative;
   padding-right: 22px;
   cursor: pointer;
 }
 
-body.crlngn-ws .application.cws:not(.crlngn-ws-off) p.hint.cws-hint-long::after {
+body.crlngn-ws .application.cws:not(.crlngn-ws-off, .crlngn-hints) p.hint.cws-hint-long::after {
   content: "";
   position: absolute;
   right: 2px;
@@ -160,13 +161,13 @@ body.crlngn-ws .application.cws:not(.crlngn-ws-off) p.hint.cws-hint-long::after 
   transition: transform 150ms ease;
 }
 
-body.crlngn-ws .application.cws:not(.crlngn-ws-off) p.hint.cws-hint-open {
+body.crlngn-ws .application.cws:not(.crlngn-ws-off, .crlngn-hints) p.hint.cws-hint-open {
   display: block;
   -webkit-line-clamp: unset;
   overflow: visible;
 }
 
-body.crlngn-ws .application.cws:not(.crlngn-ws-off) p.hint.cws-hint-open::after {
+body.crlngn-ws .application.cws:not(.crlngn-ws-off, .crlngn-hints) p.hint.cws-hint-open::after {
   transform: rotate(180deg);
 }
 
@@ -196,11 +197,6 @@ body.crlngn-ws .application.cws:not(.crlngn-ws-off) .form-footer > button {
   font: 600 13px/1.2 var(--cws-font);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-}
-
-body.crlngn-ws .application.cws.dialog:not(.crlngn-ws-off) .form-footer > button {
-  background: var(--cws-ground);
-  color: var(--cws-text-2);
 }
 
 body.crlngn-ws .application.cws:not(.crlngn-ws-off) .form-footer > button > i {
@@ -319,8 +315,10 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .categories .form-group {
     display: grid;
     grid-template-columns: minmax(0, 5fr) minmax(0, 4fr);
+    grid-template-rows: minmax(min-content, 1fr) auto;
     column-gap: var(--cws-gutter);
-    align-items: center;
+    row-gap: 2px;
+    align-content: center;
     padding: 10px 0;
     border-bottom: 1px solid var(--cws-hairline);
   }
@@ -328,17 +326,20 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .categories .form-group > label {
     grid-column: 1;
     grid-row: 1;
+    align-self: center;
   }
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .categories .form-group > .form-fields {
     grid-column: 2;
     grid-row: 1 / span 2;
+    align-self: center;
     justify-content: flex-end;
   }
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .categories .form-group > p.hint {
     grid-column: 1;
     grid-row: 2;
+    align-self: start;
   }
 }
 
@@ -371,6 +372,8 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs {
     grid-area: nav;
     flex-direction: row;
+    height: auto;
+    min-height: 0;
     gap: 8px;
     overflow-x: auto;
     overflow-y: hidden;
@@ -381,6 +384,7 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside > nav.tabs > button {
     flex: none;
+    width: auto;
     min-height: 36px;
     padding: 0 14px;
     background: var(--cws-surface);
@@ -402,6 +406,7 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
 
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .main > .categories {
     grid-area: main;
+    height: auto;
     min-height: 0;
     overflow: hidden;
   }
@@ -411,7 +416,6 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
     padding: 0;
   }
 
-  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .main > .form-footer:only-of-type,
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) aside:not(:has(> .form-footer)) ~ .main > .form-footer {
     grid-column: 1 / -1;
   }
