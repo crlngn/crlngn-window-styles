@@ -1,5 +1,22 @@
 # Changelog
 
+## [0.2.0] - 2026-10-24
+
+### Changed
+
+- Every framed ApplicationV2 form (`form.application:has(> .window-header)`) gets the styles, not only the category browsers: config sheets, settings submenus, module setting windows and so on. DialogV2 dialogs stay covered.
+- Not covered:
+  - actor sheets (`.sheet.actor`);
+  - any window whose document is an Actor, Item, JournalEntry, JournalEntryPage, RollTable or Adventure;
+  - dnd5e's own apps (`.dnd5e2`);
+  - unframed apps;
+  - windows with `crlngn-ws-off`.
+
+### Added
+
+- `EXCLUDED_SELECTOR` and `EXCLUDED_DOCUMENTS` exports.
+- Footer buttons without text get `cws-icon-only` and keep their icon.
+
 ## [0.1.6] - 2026-10-24
 
 ### Changed

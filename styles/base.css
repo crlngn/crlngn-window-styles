@@ -171,7 +171,8 @@ body.crlngn-ws .application.cws:not(.crlngn-ws-off, .crlngn-hints) p.hint.cws-hi
   transform: rotate(180deg);
 }
 
-/* Footers: uppercase text buttons, no icons; the default action takes the accent */
+/* Footers: uppercase text buttons, no icons (icon-only buttons, flagged .cws-icon-only by the kit,
+   keep theirs); the default action takes the accent */
 body.crlngn-ws .application.cws:not(.crlngn-ws-off) .form-footer {
   display: flex;
   gap: 8px;
@@ -199,7 +200,7 @@ body.crlngn-ws .application.cws:not(.crlngn-ws-off) .form-footer > button {
   text-transform: uppercase;
 }
 
-body.crlngn-ws .application.cws:not(.crlngn-ws-off) .form-footer > button > i {
+body.crlngn-ws .application.cws:not(.crlngn-ws-off) .form-footer > button:not(.cws-icon-only) > i {
   display: none;
 }
 

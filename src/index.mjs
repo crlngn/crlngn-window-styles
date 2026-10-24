@@ -2,13 +2,18 @@
  * Carolingian window styles: the Swipe dialog look for Foundry's own ApplicationV2 windows and
  * DialogV2 dialogs, shared by Carolingian modules (Swipe, Carolingian UI).
  *
- * CSS only on Foundry's existing markup. The kit adds the class `cws` to allowlisted windows,
- * injects its stylesheets once (the newest installed copy of the kit wins and takes over the
- * votes of an older one), and toggles `body.crlngn-ws` while any module votes on. The only
- * behaviour it adds is the hint toggle: a hint taller than two lines gets the classes
- * `cws-hint-long` / `cws-hint-open`, `role="button"`, `tabindex` and `aria-expanded`, and opens
- * or closes on click, Enter or Space (not in windows where Carolingian UI shows hints as tooltips,
- * `.crlngn-hints`). A window opts out with the class `crlngn-ws-off`.
+ * CSS only on Foundry's existing markup. The kit adds the class `cws` to DialogV2 dialogs and
+ * framed ApplicationV2 forms (document sheets excepted, see mark()), injects its stylesheets once
+ * (the newest installed copy of the kit wins and takes over the votes of an older one), and
+ * toggles `body.crlngn-ws` while any module votes on. A window opts out with `crlngn-ws-off`.
+ *
+ * What it adds besides CSS, all as classes or attributes on existing elements:
+ * - hints taller than two lines get `cws-hint-long` / `cws-hint-open`, `role="button"`,
+ *   `tabindex` and `aria-expanded`, and open or close on click, Enter or Space (not where
+ *   Carolingian UI shows hints as tooltips, `.crlngn-hints`);
+ * - submenu settings whose button repeats the label get `cws-submenu-same`;
+ * - footer buttons with no text get `cws-icon-only`, so they keep their icon;
+ * - a pick from the open category list on a narrow window blurs the button so the list closes.
  *
  * Stylesheets: tokens.css (the --cws-* defaults) goes into the sublayer `modules.crlngn-ws`, so a
  * host's own mapping wins whether it is in the modules layer or unlayered. base.css is imported
@@ -23,14 +28,21 @@ import { compareVersions, VoteSet } from './core.mjs';
 
 export { compareVersions, VoteSet } from './core.mjs';
 
-export const VERSION = '0.1.6';
+export const VERSION = '0.2.0';
 export const BODY_CLASS = 'crlngn-ws';
 export const APP_CLASS = 'cws';
 export const OPT_OUT_CLASS = 'crlngn-ws-off';
 export const APP_SELECTORS = Object.freeze([
-  'dialog.application.dialog:not(.dnd5e2)',
+  'dialog.application.dialog',
+  'form.application:has(> .window-header)',
   '.application.category-browser'
 ]);
+
+/** Windows left alone even when they match APP_SELECTORS: actor sheets, and dnd5e's own apps (Swipe styles them) */
+export const EXCLUDED_SELECTOR = '.sheet.actor, .dnd5e2';
+
+/** Document sheets left to their game system or module: their windows are forms too */
+export const EXCLUDED_DOCUMENTS = Object.freeze(['Actor', 'Item', 'JournalEntry', 'JournalEntryPage', 'RollTable', 'Adventure']);
 
 const GLOBAL_KEY = Symbol.for('crlngn.windowStyles');
 const HINT_LONG = 'cws-hint-long';
@@ -40,6 +52,7 @@ const HINT_SELECTOR = `body.${BODY_CLASS} .application.${APP_CLASS} p.hint.${HIN
 const TOOLTIP_HINTS = '.crlngn-hints';
 const CATEGORY_NAV = `body.${BODY_CLASS} .application.${APP_CLASS}.category-browser aside > nav.tabs`;
 const SUBMENU_SAME = 'cws-submenu-same';
+const ICON_ONLY = 'cws-icon-only';
 
 /**
  * The running copy of the kit: owns the injected stylesheet, the Foundry hooks, the document
@@ -79,14 +92,14 @@ class Runtime {
     document.head.appendChild(style);
     this.style = style;
 
-    this.hookIds.push(['renderApplicationV2', Hooks.on('renderApplicationV2', (app, element) => this.mark(element ?? app?.element))]);
+    this.hookIds.push(['renderApplicationV2', Hooks.on('renderApplicationV2', (app, element) => this.mark(element ?? app?.element, app))]);
     this.hookIds.push(['closeApplicationV2', Hooks.on('closeApplicationV2', () => this.prune())]);
     document.addEventListener('pointerdown', this.onPointerDown, true);
     document.addEventListener('click', this.onClick);
     document.addEventListener('keydown', this.onKeyDown);
 
     for (const app of foundry.applications?.instances?.values?.() ?? []) {
-      if (app.rendered) this.mark(app.element);
+      if (app.rendered) this.mark(app.element, app);
     }
   }
 
@@ -109,12 +122,17 @@ class Runtime {
   }
 
   /**
-   * Add the window class to an allowlisted window and start watching its hints.
+   * Add the window class to an allowlisted window and start watching its hints. Framed forms are
+   * covered except document sheets (actors, items, journals, tables, adventures), which belong to
+   * the game system or their module.
    * @param {HTMLElement|undefined} element
+   * @param {foundry.applications.api.ApplicationV2} [app]
    */
-  mark(element) {
+  mark(element, app) {
     if (!(element instanceof HTMLElement)) return;
-    if (element.classList.contains(OPT_OUT_CLASS) || !element.matches(APP_SELECTORS.join(', '))) return;
+    if (element.classList.contains(OPT_OUT_CLASS) || element.matches(EXCLUDED_SELECTOR)) return;
+    if (!element.matches(APP_SELECTORS.join(', '))) return;
+    if (EXCLUDED_DOCUMENTS.includes(app?.document?.documentName)) return;
     element.classList.add(APP_CLASS);
     this.prune();
     for (const hint of element.querySelectorAll('p.hint')) {
@@ -124,6 +142,9 @@ class Runtime {
       this.measure(hint);
     }
     this.markSubmenus(element);
+    for (const button of element.querySelectorAll('.form-footer > button')) {
+      button.classList.toggle(ICON_ONLY, !button.textContent.trim());
+    }
   }
 
   /**
@@ -268,4 +289,4 @@ export function runningVersion() {
   return runtime()?.version ?? null;
 }
 
-export const WindowStyles = { VERSION, APP_SELECTORS, install, request, isActive, runningVersion };
+export const WindowStyles = { VERSION, APP_SELECTORS, EXCLUDED_SELECTOR, EXCLUDED_DOCUMENTS, install, request, isActive, runningVersion };

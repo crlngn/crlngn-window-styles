@@ -11,13 +11,14 @@ The Swipe VTT dialog look for Foundry VTT's own ApplicationV2 windows and Dialog
 | Version | Windows |
 | --- | --- |
 | 0.1.0 | DialogV2 (`dialog.application.dialog`, except dnd5e's own `.dnd5e2` dialogs), category browsers (`.application.category-browser`: Game Settings, Configure Controls) |
+| 0.2.0 | Every framed ApplicationV2 form (`form.application:has(> .window-header)`), except actor sheets (`.sheet.actor`), windows whose document is an Actor, Item, JournalEntry, JournalEntryPage, RollTable or Adventure, and dnd5e's `.dnd5e2` apps. The layout changes (category list, submenu cards) stay on the category browsers |
 
 ## What it looks like
 
 - **Frame and header:** a dark frame; a small inert window icon; the title centred on one line over an accent hairline; 40px header controls.
 - **Fields and legends:** filled fields with no border; `fieldset` without a frame, its `legend` as an uppercase micro label.
 - **Hints:** `p.hint` shows two lines. A longer hint gets a caret, and a tap, Enter or Space opens and closes it. The kit sets `role="button"`, `tabindex` and `aria-expanded` on long hints only.
-- **Footers:** uppercase text buttons with their icons hidden. The default action takes the accent (`[autofocus]` in dialogs, `[type=submit]` elsewhere).
+- **Footers:** uppercase text buttons with their icons hidden; footer buttons without text keep their icon (`cws-icon-only`). The default action takes the accent (`[autofocus]` in dialogs, `[type=submit]` elsewhere).
 - **Category browsers:** sized by the window's width, not the screen's (container queries).
   - From 600px wide: the category list on the left and rows of label + hint beside the control.
   - Below 600px: search, a vertical category list collapsed to the active category (tap to open, pick to close; at most five rows, or the window's height, then it scrolls under a fade), cards (submenus show their button as an accent link with a caret, and the whole card opens them), with both footers on one row.
@@ -25,7 +26,7 @@ The Swipe VTT dialog look for Foundry VTT's own ApplicationV2 windows and Dialog
 ## Install in a host module
 
 ```json
-"dependencies": { "@crlngn/window-styles": "github:crlngn/crlngn-window-styles#v0.1.6" }
+"dependencies": { "@crlngn/window-styles": "github:crlngn/crlngn-window-styles#v0.2.0" }
 ```
 
 Copy `styles/` into the module's build output (Vite, rollup-plugin-copy):
@@ -62,7 +63,7 @@ body.my-module { --cws-accent: var(--my-accent); --cws-ground: var(--my-backgrou
 | `install({ moduleId, basePath = 'window-styles' })` | inject the styles and hooks once; returns the version running |
 | `request(moduleId, on)` | the module's vote; returns whether the styles are active |
 | `isActive()`, `runningVersion()` | state |
-| `APP_SELECTORS`, `BODY_CLASS`, `APP_CLASS`, `OPT_OUT_CLASS`, `VERSION` | constants |
+| `APP_SELECTORS`, `EXCLUDED_SELECTOR`, `EXCLUDED_DOCUMENTS`, `BODY_CLASS`, `APP_CLASS`, `OPT_OUT_CLASS`, `VERSION` | constants |
 
 ## Develop
 
