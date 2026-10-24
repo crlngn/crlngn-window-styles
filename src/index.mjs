@@ -23,7 +23,7 @@ import { compareVersions, VoteSet } from './core.mjs';
 
 export { compareVersions, VoteSet } from './core.mjs';
 
-export const VERSION = '0.1.3';
+export const VERSION = '0.1.4';
 export const BODY_CLASS = 'crlngn-ws';
 export const APP_CLASS = 'cws';
 export const OPT_OUT_CLASS = 'crlngn-ws-off';
@@ -39,6 +39,7 @@ const HINT_SELECTOR = `body.${BODY_CLASS} .application.${APP_CLASS} p.hint.${HIN
 /** Windows where Carolingian UI shows hints as tooltips: the kit leaves their hints alone */
 const TOOLTIP_HINTS = '.crlngn-hints';
 const CATEGORY_NAV = `body.${BODY_CLASS} .application.${APP_CLASS}.category-browser aside > nav.tabs`;
+const SUBMENU_SAME = 'cws-submenu-same';
 
 /**
  * The running copy of the kit: owns the injected stylesheet, the Foundry hooks, the document
@@ -121,6 +122,25 @@ class Runtime {
       this.hints.add(hint);
       this.observer?.observe(hint);
       this.measure(hint);
+    }
+    this.markSubmenus(element);
+  }
+
+  /**
+   * Flag submenu settings whose button repeats the setting's name (Foundry's own submenus do),
+   * so the narrow layout shows the name once; icons and hint markers in the label are ignored.
+   * @param {HTMLElement} element
+   */
+  markSubmenus(element) {
+    const text = (node) => {
+      const copy = node.cloneNode(true);
+      for (const extra of copy.querySelectorAll('i, svg, [class*="hint"]')) extra.remove();
+      return copy.textContent.replace(/\s+/g, ' ').trim().toLocaleLowerCase();
+    };
+    for (const button of element.querySelectorAll('.form-group > .form-fields > button[data-action="openSubmenu"]')) {
+      const group = button.closest('.form-group');
+      const label = group.querySelector(':scope > label');
+      group.classList.toggle(SUBMENU_SAME, !!label && text(label) === text(button));
     }
   }
 

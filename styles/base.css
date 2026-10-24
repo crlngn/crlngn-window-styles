@@ -595,6 +595,22 @@ body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-field
   body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .form-fields > button[data-action="openSubmenu"] > i {
     display: none;
   }
+
+  /* The button repeats the setting's name (the kit sets .cws-submenu-same): show the name once.
+     The text stays for screen readers and the button keeps covering the card */
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .categories .form-group.cws-submenu-same > .form-fields {
+    grid-row: 1;
+    height: 0;
+  }
+
+  body.crlngn-ws .application.cws.category-browser:not(.crlngn-ws-off) .categories .form-group.cws-submenu-same > .form-fields > button > span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 
 /* Scroll fade for the open category list: bottom edge at the start, both edges while scrolling,

@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.1.4] - 2026-10-24
+
+### Changed
+
+- A submenu card on a narrow category browser shows its name once when the button repeats the setting's name, as Foundry's own submenus do. The kit compares the two, ignoring icons and hint markers, and flags the setting with `cws-submenu-same`. The button's text stays for screen readers and the whole card still opens the submenu.
+
 ## [0.1.3] - 2026-10-24
 
 ### Changed
