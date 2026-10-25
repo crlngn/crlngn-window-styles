@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.3] - 2026-10-24
+
+### Fixed
+
+- A window no longer animates from Foundry's look to the kit's when it opens. The kit marks a window after Foundry has already styled it, so its transitions ran; the kit now sets `.cws-settling` for the window's first two frames, which turns transitions off.
+
 ## [0.2.2] - 2026-10-24
 
 ### Changed

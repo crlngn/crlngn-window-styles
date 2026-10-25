@@ -28,9 +28,11 @@ import { compareVersions, VoteSet } from './core.mjs';
 
 export { compareVersions, VoteSet } from './core.mjs';
 
-export const VERSION = '0.2.2';
+export const VERSION = '0.2.3';
 export const BODY_CLASS = 'crlngn-ws';
 export const APP_CLASS = 'cws';
+/** Set while a window is first marked, so its switch to the kit's look does not animate. */
+const SETTLING_CLASS = 'cws-settling';
 export const OPT_OUT_CLASS = 'crlngn-ws-off';
 export const APP_SELECTORS = Object.freeze([
   'dialog.application.dialog',
@@ -133,6 +135,10 @@ class Runtime {
     if (element.classList.contains(OPT_OUT_CLASS) || element.matches(EXCLUDED_SELECTOR)) return;
     if (!element.matches(APP_SELECTORS.join(', '))) return;
     if (EXCLUDED_DOCUMENTS.includes(app?.document?.documentName)) return;
+    if (!element.classList.contains(APP_CLASS)) {
+      element.classList.add(SETTLING_CLASS);
+      requestAnimationFrame(() => requestAnimationFrame(() => element.classList.remove(SETTLING_CLASS)));
+    }
     element.classList.add(APP_CLASS);
     this.prune();
     for (const hint of element.querySelectorAll('p.hint')) {
