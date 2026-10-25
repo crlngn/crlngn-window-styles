@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.2] - 2026-10-24
+
+### Changed
+
+- Fieldset legends and the submenu links in narrow category browsers use the new `--cws-link` token, which defaults to Foundry's `--color-text-hyperlink` (falling back to the accent), for readability.
+
 ## [0.2.1] - 2026-10-24
 
 ### Changed
