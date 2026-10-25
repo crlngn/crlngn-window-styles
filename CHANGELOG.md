@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.6] - 2026-10-24
+
+### Added
+
+- A light palette for Foundry's light theme: under `body.theme-light`, or on a window Foundry themes light (`.themed.theme-light`), the ground, surface, field, pressed, hairline, text and shadow tokens switch to light values. A window themed dark inside a light page keeps the dark palette. Accent and link colours are unchanged.
+
 ## [0.2.5] - 2026-10-24
 
 ### Changed
