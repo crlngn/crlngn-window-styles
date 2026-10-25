@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.1] - 2026-10-24
+
+### Changed
+
+- Fieldsets have a 1px accent-40 border and padding (0.5rem top, 1rem on the other sides). Their legend is in the accent colour at `--font-size-14`, without uppercase.
+
 ## [0.2.0] - 2026-10-24
 
 ### Changed

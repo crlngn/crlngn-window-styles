@@ -110,19 +110,19 @@ body.crlngn-ws .application.cws:not(.crlngn-ws-off) :is(input, select, textarea,
 }
 
 body.crlngn-ws .application.cws:not(.crlngn-ws-off) fieldset {
-  margin: 0 0 var(--cws-gutter);
-  padding: 0;
-  border: 0;
+  margin: 1rem 0 var(--cws-gutter) 0;
+  padding: 0.5rem 1rem 1rem 1rem;
+  border: 1px solid var(--cws-accent-40);
   min-width: 0;
 }
 
 body.crlngn-ws .application.cws:not(.crlngn-ws-off) fieldset > legend {
   margin: 0 0 8px;
   padding: 0;
-  font: 600 11px/1.2 var(--cws-font);
+  font: 600 var(--font-size-14)/1.2 var(--cws-font);
   letter-spacing: 0.06em;
-  text-transform: uppercase;
-  color: var(--cws-text-3);
+  text-transform: none;
+  color: var(--cws-accent);
 }
 
 body.crlngn-ws .application.cws:not(.crlngn-ws-off) .form-group > label {

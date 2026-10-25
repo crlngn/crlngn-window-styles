@@ -16,7 +16,7 @@ The Swipe VTT dialog look for Foundry VTT's own ApplicationV2 windows and Dialog
 ## What it looks like
 
 - **Frame and header:** a dark frame; a small inert window icon; the title centred on one line over an accent hairline; 40px header controls.
-- **Fields and legends:** filled fields with no border; `fieldset` without a frame, its `legend` as an uppercase micro label.
+- **Fields and legends:** filled fields with no border; `fieldset` framed by an accent hairline, with its `legend` in the accent colour.
 - **Hints:** `p.hint` shows two lines. A longer hint gets a caret, and a tap, Enter or Space opens and closes it. The kit sets `role="button"`, `tabindex` and `aria-expanded` on long hints only.
 - **Footers:** uppercase text buttons with their icons hidden; footer buttons without text keep their icon (`cws-icon-only`). The default action takes the accent (`[autofocus]` in dialogs, `[type=submit]` elsewhere).
 - **Category browsers:** sized by the window's width, not the screen's (container queries).
@@ -26,7 +26,7 @@ The Swipe VTT dialog look for Foundry VTT's own ApplicationV2 windows and Dialog
 ## Install in a host module
 
 ```json
-"dependencies": { "@crlngn/window-styles": "github:crlngn/crlngn-window-styles#v0.2.0" }
+"dependencies": { "@crlngn/window-styles": "github:crlngn/crlngn-window-styles#v0.2.1" }
 ```
 
 Copy `styles/` into the module's build output (Vite, rollup-plugin-copy):
