@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.5] - 2026-10-24
+
+### Changed
+
+- Sizes are tokens: `--cws-control`, `--cws-header` and `--cws-size-title`, `-body`, `-label`, `-field`, `-nav`, `-button`, `-hint`. The defaults stay the phone (touch) sizes; screens at least 768px wide and 600px tall get a compact scale (36px controls, 44px header, 14px labels and fields, 12px hints and buttons, 16px title).
+
 ## [0.2.4] - 2026-10-24
 
 ### Changed

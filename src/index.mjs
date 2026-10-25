@@ -28,7 +28,7 @@ import { compareVersions, VoteSet } from './core.mjs';
 
 export { compareVersions, VoteSet } from './core.mjs';
 
-export const VERSION = '0.2.4';
+export const VERSION = '0.2.5';
 export const BODY_CLASS = 'crlngn-ws';
 export const APP_CLASS = 'cws';
 /** Set while a window is first marked, so its switch to the kit's look does not animate. */
