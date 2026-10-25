@@ -26,7 +26,7 @@ The Swipe VTT dialog look for Foundry VTT's own ApplicationV2 windows and Dialog
 ## Install in a host module
 
 ```json
-"dependencies": { "@crlngn/window-styles": "github:crlngn/crlngn-window-styles#v0.2.3" }
+"dependencies": { "@crlngn/window-styles": "github:crlngn/crlngn-window-styles#v0.2.4" }
 ```
 
 Copy `styles/` into the module's build output (Vite, rollup-plugin-copy):

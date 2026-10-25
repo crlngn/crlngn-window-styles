@@ -1,5 +1,11 @@
 # Changelog
 
+## [0.2.4] - 2026-10-24
+
+### Changed
+
+- Wide category browsers (600px and up): the category list has no right padding (`aside` `padding-right: 0`), and its tabs are padded `1rem var(--scroll-margin) 1rem 0`.
+
 ## [0.2.3] - 2026-10-24
 
 ### Fixed
